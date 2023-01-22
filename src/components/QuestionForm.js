@@ -1,7 +1,7 @@
+
 import React, { useState } from "react";
 
-function QuestionForm({onAddQuestion}) {
-  // Initialize form data
+function QuestionForm({ onAddQuestion }) {
   const [formData, setFormData] = useState({
     prompt: "",
     answer1: "",
@@ -11,19 +11,16 @@ function QuestionForm({onAddQuestion}) {
     correctIndex: 0,
   });
 
-  // set formData to input values
   function handleChange(event) {
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
     });
-    
   }
 
-
-  // POST formdata then clear input fields
   function handleSubmit(event) {
     event.preventDefault();
+    console.log(formData);
     fetch("http://localhost:4000/questions", {
       method: "POST",
       headers: {
@@ -31,21 +28,17 @@ function QuestionForm({onAddQuestion}) {
       },
       body: JSON.stringify({
         prompt: formData.prompt,
-        answers:[
-        formData.answer1,
-        formData.answer2,
-        formData.answer3,
-        formData.answer4,
-      ],
-      correctIndex: parseInt(formData.correctIndex),
+        answers: [
+          formData.answer1,
+          formData.answer2,
+          formData.answer3,
+          formData.answer4,
+        ],
+        correctIndex: parseInt(formData.correctIndex),
       }),
-      
     })
-    .then((res) => res.json())
-    .then((newQuestion) => (onAddQuestion(newQuestion)));
-
-    console.log(formData.prompt)
-
+      .then((r) => r.json())
+      .then((newQuestion) => onAddQuestion(newQuestion));
     const submittedFormData = {
       prompt: "",
       answer1: "",
@@ -55,10 +48,8 @@ function QuestionForm({onAddQuestion}) {
       correctIndex: 0,
     };
     setFormData(submittedFormData);
-  
+   
   }
-
-
   return (
     <section>
       <h1>New Question</h1>
@@ -127,4 +118,4 @@ function QuestionForm({onAddQuestion}) {
   );
 }
 
-export default QuestionForm;
+export default QuestionForm; 
